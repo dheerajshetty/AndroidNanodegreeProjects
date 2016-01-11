@@ -1,6 +1,5 @@
 package com.example.dheerajshetty.popularmovies;
 
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -20,7 +19,6 @@ public class Movie implements Parcelable {
     //Key used when passing a movie from one fragment to the other
     public static final String MOVIE_BUNDLE_KEY = "movies";
     String title;
-    Bitmap moviePoster;
     String plot;
     String userRating;
     String releaseDate;
@@ -28,7 +26,6 @@ public class Movie implements Parcelable {
 
     protected Movie(Parcel in) {
         this.title = in.readString();
-        this.moviePoster = in.readParcelable(getClass().getClassLoader());
         this.plot = in.readString();
         this.userRating = in.readString();
         this.releaseDate = in.readString();
@@ -63,7 +60,6 @@ public class Movie implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
-        dest.writeParcelable(moviePoster, flags);
         dest.writeString(plot);
         dest.writeString(userRating);
         dest.writeString(releaseDate);
@@ -74,16 +70,8 @@ public class Movie implements Parcelable {
         return moviePosterPath;
     }
 
-    public void setMoviePoster(Bitmap moviePoster) {
-        this.moviePoster = moviePoster;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public Bitmap getMoviePoster() {
-        return moviePoster;
     }
 
     public String getReleaseDate() {

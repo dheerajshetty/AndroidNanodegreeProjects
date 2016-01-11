@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +60,7 @@ public class MovieDetailFragment extends Fragment {
 
         //Set movie thumbnail
         ImageView movieImage = (ImageView) rootView.findViewById(R.id.movie_detail_imageview);
-        movieImage.setImageBitmap(mMovie.getMoviePoster());
+        Picasso.with(getContext()).load(mMovie.getPosterPath()).into(movieImage);
 
         //Set release date
         TextView releaseDate = (TextView) rootView.findViewById(R.id.release_date_textview);

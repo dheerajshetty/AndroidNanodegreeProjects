@@ -1,8 +1,6 @@
 package com.example.dheerajshetty.popularmovies;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -60,12 +58,6 @@ public class MovieListImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
         Picasso.with(mContext).load(mMovies[position].getPosterPath()).into(imageView);
-
-        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-
-        if(drawable != null) {
-            mMovies[position].setMoviePoster((Bitmap) drawable.getBitmap());
-        }
 
         return imageView;
     }
