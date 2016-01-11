@@ -1,15 +1,21 @@
 package com.example.dheerajshetty.popularmovies;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * This is the main activity for the popular movies app.
+ * It begins with adding a fragment with the list of popular movies
+ * in a grid. On selecting a particular movie it replaces the fragment
+ * with a detailed view fragment with details of the selected movie,
+ */
+public class MainActivity extends AppCompatActivity
+        implements OnFragmentInteractionListener {
+
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,14 +24,18 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+        if(findViewById(R.id.fragment_container) != null) {
+            //If previous state exists, then do not add fragment
+            if (savedInstanceState != null) {
+                return;
             }
-        });
+
+            //First fragment showing the list of movies in a grid view
+            MovieListFragment movieListFragment = MovieListFragment.newInstance();
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, movieListFragment).commit();
+        }
     }
 
     @Override
@@ -48,5 +58,30 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(String TAG, Bundle bundle) {
+
+        //Start detail movie fragment
+        //Replace the existing movie grid fragment
+        if(TAG.equals(MovieListFragment.class.getSimpleName())) {
+            MovieDetailFragment movieDetailFragment = MovieDetailFragment.newInstance(bundle);
+
+            //Phone view
+            if(findViewById(R.id.fragment_container) != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, movieDetailFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+
+            //Tablet view
+            if(findViewById(R.id.movie_detail_container) != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.movie_detail_container, movieDetailFragment)
+                        .commit();
+            }
+        }
     }
 }
